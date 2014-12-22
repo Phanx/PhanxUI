@@ -1,0 +1,8 @@
+## Interface: 60000
+
+## Author: Phanx
+## X-Email: addons@phanx.net
+## X-Copyright: Copyright (c) 2007-2014 Phanx. All rights reserved.
+
+Bindings.lua
+CVars.lua
