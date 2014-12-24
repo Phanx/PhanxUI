@@ -135,15 +135,17 @@ local cvars = {
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_LOGIN")
 f:SetScript("OnEvent", function()
-	SetAutoDeclineGuildInvites(true)
-	ShowAccountAchievements(true) -- show ONLY account achievements
-	for k, v in pairs(cvars) do
-		if GetCVar(k) == nil then
-			print("CVar", k, "doesn't exist!")
-		else
-			SetCVar(k, v)
+	C_Timer.After(random(100,200)/100, function()
+		SetAutoDeclineGuildInvites(true)
+		ShowAccountAchievements(true) -- show ONLY account achievements
+		for k, v in pairs(cvars) do
+			if GetCVar(k) == nil then
+				print("CVar", k, "doesn't exist!")
+			else
+				SetCVar(k, v)
+			end
 		end
-	end
+	end)
 end)
 
 hooksecurefunc("SetCVar", function(k, v)
