@@ -6,149 +6,180 @@
 	addon, as long as you keep my name out of it.
 ----------------------------------------------------------------------]]
 
+local bindings = {
+	-- Movement Keys
+	["E"]              = "MOVEFORWARD",
+	["CTRL-E"]         = "TOGGLEAUTORUN",
+	["BUTTON4"]        = "TOGGLEAUTORUN",
+	["CTRL-SHIFT-E"]   = "TOGGLERUN",
+	["S"]              = "MOVEBACKWARD",
+	["SHIFT-S"]        = "SITORSTAND",
+	["A"]              = "STRAFELEFT",
+	["SHIFT-A"]        = "TURNLEFT",
+	["D"]              = "STRAFERIGHT",
+	["SHIFT-D"]        = "TURNRIGHT",
+	["SPACE"]          = "JUMP",
+
+	-- Chat
+	["ENTER"]          = "OPENCHAT",
+	["/"]              = "OPENCHATSLASH",
+	["SHIFT-R"]        = "REPLY",
+
+	-- Action Bar
+	["1"]                   = "ACTIONBUTTON1",
+	["2"]                   = "ACTIONBUTTON2",
+	["3"]                   = "ACTIONBUTTON3",
+	["4"]                   = "ACTIONBUTTON4",
+	["5"]                   = "ACTIONBUTTON5",
+	["6"]                   = "ACTIONBUTTON6",
+	["ALT-Q"]               = "EXTRAACTIONBUTTON1",
+	["SHIFT-UP"]            = "PREVIOUSACTIONPAGE",
+	["SHIFT-MOUSEWHEELUP"]  = "PREVIOUSACTIONPAGE",
+	["SHIFT-DOWN"]          = "NEXTACTIONPAGE",
+	["SHIFT-MOUSEWHEELDOWN"]= "NEXTACTIONPAGE",
+
+	-- Targeting
+	["TAB"]            = "TARGETNEARESTENEMY",
+	["SHIFT-TAB"]      = "TARGETNEARESTFRIEND",
+
+	-- Targeting / Nameplates
+	["SHIFT-V"]        = "NAMEPLATES",
+	["CTRL-V"]         = "FRIENDNAMEPLATES",
+
+	-- Targeting / Interaction
+	["T"]              = "STARTATTACK",
+	["ALT-T"]          = "ASSISTTARGET",
+	["ALT-SHIFT-T"]    = "INTERACTTARGET",
+
+	-- Interface Panels
+	["ESCAPE"]         = "TOGGLEGAMEMENU",
+	["B"]              = "OPENALLBAGS",
+	["M"]              = "TOGGLEWORLDMAP",
+	["SHIFT-M"]        = "TOGGLEBATTLEFIELDMINIMAP",
+	["CTRL-M"]         = "TOGGLEENCOUNTERJOURNAL",
+	["CTRL-SHIFT-M"]   = "TOGGLEGARRISONLANDINGPAGE",
+	["ALT-SHIFT-M"]    = "TOGGLEWORLDSTATESCORES",
+	["F6"]             = "TOGGLECHARACTER0",
+	["F7"]             = "TOGGLESPELLBOOK",
+	["SHIFT-F7"]       = "TOGGLECOLLECTIONSMOUNTJOURNAL",
+	["CTRL-F7"]        = "TOGGLECOLLECTIONSPETJOURNAL",
+	["CTRL-SHIFT-F7"]  = "TOGGLECOLLECTIONSTOYBOX",
+	["F8"]             = "TOGGLETALENTS",
+	["SHIFT-F8"]       = "TOGGLEINSCRIPTION",
+	["F9"]             = "TOGGLEQUESTLOG",
+	["F10"]            = "TOGGLESOCIAL",
+	["SHIFT-F10"]      = "TOGGLEGUILDTAB",
+	["F11"]            = "TOGGLEDUNGEONSANDRAIDS",
+	["SHIFT-F11"]      = "TOGGLECHARACTER4",
+	["F12"]            = "TOGGLEACHIEVEMENT",
+
+	-- Miscellaneous
+	["`"]              = "DISMOUNT",
+	["ALT-Z"]          = "TOGGLEUI",
+	["CTRL-R"]         = "TOGGLEFPS",
+	["PRINTSCREEN"]    = "SCREENSHOT",
+
+	-- Camera
+	["MOUSEWHEELUP"]   = "CAMERAZOOMIN",
+	["MOUSEWHEELDOWN"] = "CAMERAZOOMOUT",
+
+	-- Vehicle Controls
+	["CTRL-MOUSEWHEELUP"]   = "VEHICLEAIMUP",
+	["CTRL-MOUSEWHEELDOWN"] = "VEHICLEAIMDOWN",
+
+	-- Addons
+	["SHIFT-B"]        = "BAGNON_BANK_TOGGLE",
+	["ALT-CTRL-F"]     = "GOFISH_TOGGLE",
+	["ALT-SHIFT-F"]    = "HYDRA_FOLLOW_TARGET",
+	["CTRL-F"]         = "HYDRA_FOLLOW_ME",
+	["I"]              = "EXAMINER_TARGET",
+	["ALT-I"]          = "EXAMINER_MOUSEOVER",
+	["ALT-SHIFT-L"]    = "CLICK LevelFlightButton:LeftButton",
+	["ALT-N"]          = "NOTEBOOK_PANEL",
+}
+
+local modifiedClicks = {
+	AUTOLOOTTOGGLE   = "SHIFT",
+	CHATLINK         = "SHIFT",
+	COMPAREITEMS     = "SHIFT",
+	DRESSUP          = "CTRL",
+	-- FOCUSCAST not personally used, not set by default
+	OPENALLBAGS      = "SHIFT", -- only affects clicking on default bag bar buttons
+	PICKUPACTION     = "SHIFT",
+	QUESTWATCHTOGGLE = "SHIFT",
+	SELFCAST         = "ALT",
+	SHOWITEMFLYOUT   = "CTRL", -- TODO
+	-- SHOWMULTICASTFLYOUT obsolete since 4.0
+	SOCKETITEM       = "CTRL",
+	SPLITSTACK       = "SHIFT",
+	-- STICKYCAMERA unknown
+	TOKENWATCHTOGGLE = "SHIFT",
+}
+
 local PhanxUI = CreateFrame("Frame", "PhanxUI")
 
 PhanxUI:RegisterEvent("PLAYER_LOGIN")
 PhanxUI:SetScript("OnEvent", function(self)
-	C_Timer.After(random(100,200)/100, function()
-		self:ApplyMyBindings(true)
-		self:ApplyDefaultActionBindings(nil, true)
+	local changes
+
+	local function CheckBinding(command, header, key, ...)
+		if not key then return end
+
+		local current = bindings[key]
+		if current == nil then
+			print("REMOVE", key, command)
+			changes = true
+			SetBinding(key)
+		elseif current == command then
+			bindings[key] = false -- already set
+		end
+
+		if (...) then
+			return CheckBinding(command, header, ...)
+		end
+	end
+
+	for i = 1, GetNumBindings() do
+		CheckBinding(GetBinding(i))
+	end
+
+	for key, command in pairs(bindings) do
+		if command then
+			--print("RESTORE", key, command)
+			changes = true
+			SetBinding(key, command)
+		end
+	end
+
+	-- Something is unsetting these, and it's not an addon.
+	for action, key in pairs(modifiedClicks) do
+		if GetModifiedClick(action) ~= key then
+			print("FIXED", action, key)
+			changes = true
+			SetModifiedClick(action, key)
+		end
+	end
+
+	if changes then
 		SaveBindings(1)
-	end)
+	end
 end)
 
 SetBinding("ESCAPE", "TOGGLEGAMEMENU")
+SetBinding("ENTER", "OPENCHAT")
 SetBinding("/", "OPENCHATSLASH")
-
-function PhanxUI:ApplyMyBindings(silent)
-	self:ClearAllBindings()
-
-	-- Movement Keys
-	SetBinding("E",            "MOVEFORWARD")
-	SetBinding("CTRL-E",       "TOGGLEAUTORUN")
-	SetBinding("BUTTON4",      "TOGGLEAUTORUN")
-	SetBinding("CTRL-SHIFT-E", "TOGGLERUN")
-	SetBinding("S",            "MOVEBACKWARD")
-	SetBinding("SHIFT-S",      "SITORSTAND")
-	SetBinding("A",            "STRAFELEFT")
-	SetBinding("SHIFT-A",      "TURNLEFT")
-	SetBinding("D",            "STRAFERIGHT")
-	SetBinding("SHIFT-D",      "TURNRIGHT")
-	SetBinding("SPACE",        "JUMP")
-
-	-- Chat
-	SetBinding("ENTER",  "OPENCHAT")
-	SetBinding("/",       "OPENCHATSLASH")
-	SetBinding("SHIFT-R", "REPLY")
-
-	-- Action Bar
-	SetBinding("ALT-Q",                "EXTRAACTIONBUTTON1")
-	SetBinding("SHIFT-UP",             "PREVIOUSACTIONPAGE")
-	SetBinding("SHIFT-MOUSEWHEELUP",   "PREVIOUSACTIONPAGE")
-	SetBinding("SHIFT-DOWN",           "NEXTACTIONPAGE")
-	SetBinding("SHIFT-MOUSEWHEELDOWN", "NEXTACTIONPAGE")
-
-	-- Targeting
-	SetBinding("TAB",       "TARGETNEARESTENEMY")
-	SetBinding("SHIFT-TAB", "TARGETNEARESTFRIEND")
-
-	-- Targeting / Nameplates
-	SetBinding("SHIFT-V", "NAMEPLATES")
-	SetBinding("CTRL-V",  "FRIENDNAMEPLATES")
-
-	-- Targeting / Interaction
-	SetBinding("T",           "STARTATTACK")
-	SetBinding("ALT-T",       "ASSISTTARGET")
-	SetBinding("ALT-SHIFT-T", "INTERACTTARGET")
-
-	-- Interface Panels
-	SetBinding("ESCAPE",        "TOGGLEGAMEMENU")
-	SetBinding("B",             "OPENALLBAGS")
-	SetBinding("M",             "TOGGLEWORLDMAP")
-	SetBinding("SHIFT-M",       "TOGGLEBATTLEFIELDMINIMAP")
-	SetBinding("CTRL-M",        "TOGGLEENCOUNTERJOURNAL")
-	SetBinding("CTRL-SHIFT-M",  "TOGGLEGARRISONLANDINGPAGE")
-	SetBinding("ALT-SHIFT-M",   "TOGGLEWORLDSTATESCORES")
-	SetBinding("F6",            "TOGGLECHARACTER0")
-	SetBinding("F7",            "TOGGLESPELLBOOK")
-	SetBinding("SHIFT-F7",      "TOGGLECOLLECTIONSMOUNTJOURNAL")
-	SetBinding("CTRL-F7",       "TOGGLECOLLECTIONSPETJOURNAL")
-	SetBinding("CTRL-SHIFT-F7", "TOGGLECOLLECTIONSTOYBOX")
-	SetBinding("F8",            "TOGGLETALENTS")
-	SetBinding("SHIFT-F8",      "TOGGLEINSCRIPTION")
-	SetBinding("F9",            "TOGGLEQUESTLOG")
-	SetBinding("F10",           "TOGGLESOCIAL")
-	SetBinding("SHIFT-F10",     "TOGGLEGUILDTAB")
-	SetBinding("F11",           "TOGGLEDUNGEONSANDRAIDS")
-	SetBinding("SHIFT-F11",     "TOGGLECHARACTER4")
-	SetBinding("F12",           "TOGGLEACHIEVEMENT")
-
-	-- Miscellaneous
-	SetBinding("`",           "DISMOUNT")
-	SetBinding("ALT-Z",       "TOGGLEUI")
-	SetBinding("CTRL-R",      "TOGGLEFPS")
-	SetBinding("PRINTSCREEN", "SCREENSHOT")
-
-	-- Camera
-	SetBinding("MOUSEWHEELUP",   "CAMERAZOOMIN")
-	SetBinding("MOUSEWHEELDOWN", "CAMERAZOOMOUT")
-
-	-- Vehicle Controls
-	SetBinding("CTRL-MOUSEWHEELUP",   "VEHICLEAIMUP")
-	SetBinding("CTRL-MOUSEWHEELDOWN", "VEHICLEAIMDOWN")
-
-	-- Addons
-	SetBinding("SHIFT-B",     "BAGNON_BANK_TOGGLE")
-	SetBinding("ALT-CTRL-F",  "GOFISH_TOGGLE")
-	SetBinding("ALT-SHIFT-F", "HYDRA_FOLLOW")
-	SetBinding("CTRL-F",      "HYDRA_FOLLOW_ME")
-	SetBinding("I",           "EXAMINER_TARGET")
-	SetBinding("ALT-I",       "EXAMINER_MOUSEOVER")
-	SetBinding("ALT-SHIFT-L", "CLICK LevelFlightButton:LeftButton")
-	SetBinding("ALT-N",       "NOTEBOOK_PANEL")
-
-	if not silent then
-		print("Bindings applied.")
-	end
-end
-
-function PhanxUI:ApplyDefaultActionBindings(full, silent)
-	SetBinding("1", "ACTIONBUTTON1")
-	SetBinding("2", "ACTIONBUTTON2")
-	SetBinding("3", "ACTIONBUTTON3")
-	SetBinding("4", "ACTIONBUTTON4")
-	SetBinding("5", "ACTIONBUTTON5")
-	SetBinding("6", "ACTIONBUTTON6")
-
-	if not full then
-		if not silent then
-			print("Bindings applied for action buttons 1-6.")
-		end
-		return
-	end
-
-	SetBinding("7", "ACTIONBUTTON7")
-	SetBinding("8", "ACTIONBUTTON8")
-	SetBinding("9", "ACTIONBUTTON9")
-	SetBinding("0", "ACTIONBUTTON10")
-	SetBinding("-", "ACTIONBUTTON11")
-	SetBinding("=", "ACTIONBUTTON12")
-
-	if not silent then
-		print("Bindings applied for action buttons 1-12.")
-	end
-end
 
 ------------------------------------------------------------------------
 --	ClearAllBindings()
 --		Removes all bindings, and then applies the following bindings:
---			[1] ESC -> Toggle main menu
---			[2] / -> Open chat input box with a pre-filled slash
+--			[1] ESCAPE -> Toggle main menu
+--			[2] ENTER -> Open chat
+--			[3] / -> Open chat with a pre-filled slash
 ------------------------------------------------------------------------
 
 function PhanxUI:ClearAllBindings()
 	for i = 1, GetNumBindings() do
-		for j = select("#", GetBinding(i)), 2, -1 do
+		for j = select("#", GetBinding(i)), 3, -1 do
 			local b = select(j, GetBinding(i))
 			if b then
 				SetBinding(b)
@@ -156,6 +187,7 @@ function PhanxUI:ClearAllBindings()
 		end
 	end
 	SetBinding("ESCAPE", "TOGGLEGAMEMENU")
+	SetBinding("ENTER", "OPENCHAT")
 	SetBinding("/", "OPENCHATSLASH")
 end
 
@@ -236,7 +268,7 @@ function PhanxUI:DumpBindings(raw)
 	for i = 1, GetNumBindings() do
 		local command = GetBinding(i)
 		if command ~= "NONE" then
-			for j = 2, select("#", GetBinding(i)) do
+			for j = 3, select("#", GetBinding(i)) do
 				local key = select(j, GetBinding(i))
 				if raw then
 					print(key, "==>", command)
