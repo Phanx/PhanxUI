@@ -119,7 +119,7 @@ local modifiedClicks = {
 local PhanxUI = CreateFrame("Frame", "PhanxUI")
 
 PhanxUI:RegisterEvent("PLAYER_LOGIN")
-PhanxUI:SetScript("OnEvent", function(self)
+PhanxUI:SetScript("OnEvent", function(self) C_Timer.After(5, function()
 	local changes
 
 	local function CheckBinding(command, header, key, ...)
@@ -163,7 +163,7 @@ PhanxUI:SetScript("OnEvent", function(self)
 	if changes then
 		SaveBindings(1)
 	end
-end)
+end) end)
 
 SetBinding("ESCAPE", "TOGGLEGAMEMENU")
 SetBinding("ENTER", "OPENCHAT")
