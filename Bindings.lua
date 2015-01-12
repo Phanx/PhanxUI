@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	PhanxUI
 	Hardcoded personal UI setup.
-	Copyright (c) 2007-2014 Phanx <addons@phanx.net>. All rights reserved.
+	Copyright (c) 2007-2015 Phanx <addons@phanx.net>. All rights reserved.
 	Feel free to use any or all of the code from this addon in your own
 	addon, as long as you keep my name out of it.
 ----------------------------------------------------------------------]]
@@ -100,26 +100,26 @@ local bindings = {
 
 local modifiedClicks = {
 	AUTOLOOTTOGGLE   = "SHIFT",
-	CHATLINK         = "SHIFT",
+	CHATLINK         = "SHIFT-BUTTON1",
 	COMPAREITEMS     = "SHIFT",
-	DRESSUP          = "CTRL",
-	-- FOCUSCAST not personally used, not set by default
+	DRESSUP          = "CTRL-BUTTON1",
+	FOCUSCAST        = "NONE",
 	OPENALLBAGS      = "SHIFT", -- only affects clicking on default bag bar buttons
 	PICKUPACTION     = "SHIFT",
 	QUESTWATCHTOGGLE = "SHIFT",
 	SELFCAST         = "ALT",
-	SHOWITEMFLYOUT   = "CTRL", -- TODO
+	SHOWITEMFLYOUT   = "ALT",
 	-- SHOWMULTICASTFLYOUT obsolete since 4.0
-	SOCKETITEM       = "CTRL",
+	SOCKETITEM       = "SHIFT-BUTTON2",
 	SPLITSTACK       = "SHIFT",
-	-- STICKYCAMERA unknown
+	STICKYCAMERA     = "CTRL", -- purpose unknown
 	TOKENWATCHTOGGLE = "SHIFT",
 }
 
 local PhanxUI = CreateFrame("Frame", "PhanxUI")
 
 PhanxUI:RegisterEvent("PLAYER_LOGIN")
-PhanxUI:SetScript("OnEvent", function(self) C_Timer.After(5, function()
+PhanxUI:SetScript("OnEvent", function(self)
 	local changes
 
 	local function CheckBinding(command, header, key, ...)
@@ -127,7 +127,7 @@ PhanxUI:SetScript("OnEvent", function(self) C_Timer.After(5, function()
 
 		local current = bindings[key]
 		if current == nil then
-			print("REMOVE", key, command)
+			--print("REMOVE", key, command)
 			changes = true
 			SetBinding(key)
 		elseif current == command then
@@ -151,23 +151,20 @@ PhanxUI:SetScript("OnEvent", function(self) C_Timer.After(5, function()
 		end
 	end
 
-	-- Something is unsetting these, and it's not an addon.
+	--[[ Something is unsetting these, and it's not an addon.
 	for action, key in pairs(modifiedClicks) do
-		if GetModifiedClick(action) ~= key then
-			print("FIXED", action, key)
+		if GetModifiedClick(action) == nil then
+			print("FIX", action, key)
 			changes = true
 			SetModifiedClick(action, key)
 		end
-	end
+	end]]
 
 	if changes then
+		--print("SAVE")
 		SaveBindings(1)
 	end
-end) end)
-
-SetBinding("ESCAPE", "TOGGLEGAMEMENU")
-SetBinding("ENTER", "OPENCHAT")
-SetBinding("/", "OPENCHATSLASH")
+end)
 
 ------------------------------------------------------------------------
 --	ClearAllBindings()
