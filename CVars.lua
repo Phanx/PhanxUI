@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	PhanxUI
 	Hardcoded personal UI setup.
-	Copyright (c) 2007-2014 Phanx <addons@phanx.net>. All rights reserved.
+	Copyright (c) 2007-2015 Phanx <addons@phanx.net>. All rights reserved.
 	Feel free to use any or all of the code from this addon in your own
 	addon, as long as you keep my name out of it.
 ----------------------------------------------------------------------]]
@@ -142,14 +142,15 @@ f:SetScript("OnEvent", function()
 		if o == nil then
 			print("CVar", k, "doesn't exist!")
 		elseif o ~= v then
+	--		print("SetCVar", k, v)
 			SetCVar(k, v)
 		end
 	end
 end)
 
 hooksecurefunc("SetCVar", function(k, v)
-	local w = cvars[k]
-	if w and tostring(v) ~= w then
-		DEFAULT_CHAT_FRAME:AddMessage("|cffff9f7fSetCVar|r" .. v .. "|cffff9f7f<==|r" .. w)
+	local o = cvars[k]
+	if o and tostring(v) ~= o then
+		print("|cffff9f7fSetCVar|r", k, o, "|cffff9f7f==>|r", v)
 	end
 end)
