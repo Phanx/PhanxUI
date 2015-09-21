@@ -151,14 +151,14 @@ PhanxUI:SetScript("OnEvent", function(self)
 		end
 	end
 
-	--[[ Something is unsetting these, and it's not an addon.
+	--[[ Something is unsetting these, and it's not an addon. ]]
 	for action, key in pairs(modifiedClicks) do
-		if GetModifiedClick(action) == nil then
-			print("FIX", action, key)
+		if GetModifiedClick(action) ~= key then
+			--print("FIX", action, key)
 			changes = true
 			SetModifiedClick(action, key)
 		end
-	end]]
+	end
 
 	if changes then
 		--print("SAVE")
