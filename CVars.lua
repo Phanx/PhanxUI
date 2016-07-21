@@ -66,7 +66,6 @@ local cvars = {
 	chatStyle                = "classic",
 --	chatTimestamps           = "none",
 	colorChatNamesByClass    = "1", -- no UI
-	conversationMode         = "inline",
 	guildMemberNotify        = "0",
 	profanityFilter          = "0",
 	removeChatDelay          = "1",

@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	PhanxUI
 	Hardcoded personal UI setup.
-	Copyright (c) 2007-2015 Phanx <addons@phanx.net>. All rights reserved.
+	Copyright (c) 2007-2016 Phanx <addons@phanx.net>. All rights reserved.
 	Feel free to use any or all of the code from this addon in your own
 	addon, as long as you keep my name out of it.
 ----------------------------------------------------------------------]]
@@ -20,9 +20,6 @@ local macros = {
 /stopmacro [noexists] [dead]
 /run PlaySound("FriendJoinGame") UIErrorsFrame:AddMessage("Found " .. UnitName("target"))
 		]],
-		TradeSkillUp = [[
-/run if SKILLUPSTEP == 3 then StaticPopup1Button1:Click() SKILLUPSTEP = 1 elseif SKILLUPSTEP == 2 then GetMouseFocus():Click() SKILLUPSTEP = 3 else TradeSkillCreateButton:Click() SKILLUPSTEP = 2 end
-		]],
 	},
 	WARLOCK = {
 		Attack = [[
@@ -30,11 +27,11 @@ local macros = {
 /petmoveto [mod:ctrl]
 /petattack [nomod]
 		]],
-		Breath = [[
+		KBreath = [[
 #showtooltip
 /cast [@player] Fel Flame Breath
 		]],
-		Charge = [[
+		KCharge = [[
 #showtooltip
 /target Kanrethad
 /petattack
@@ -42,49 +39,21 @@ local macros = {
 		]],
 		Demon = [[
 #showtooltip
-/cast [pet:Imp,@player] [] Shadow Lock
+/cast [pet:Imp,@player] [] Command Demon
 		]],
-		Doom = [[
+		KDoom = [[
 #showtooltip
 /target Doom Lord
 /cast Banish
 		]],
-		Heal = [[
+		KHeal = [[
 #showtooltip
 /cast Demonic Siphon
-		]],
-		Imps = [[
-#showtooltip
-/target Wild Imp
-/petattack
-/cast Fel Flame Breath
-		]],
-		Nuke = [[
-#showtooltip
-/cast [btn:2] [mod] Shadowburn; Chaos Bolt
-		]],
-		Pit = [[
-#showtooltip
-/run PetDismiss()
-/target Pit Lord
-/cast Enslave Demon
-		]],
-		Power = [[
-#showtooltip Dark Soul: Instability
-/stopmacro [nocombat]
-/cast Dark Soul: Instability
 		]],
 		Sac = [[
 #showtooltip
 /cast Sacrificial Pact
 /run PetDismiss()
-		]],
-		Soulshatter = [[
-#showtooltip
-/stopmacro [nocombat]
-/stopcasting
-/cast Soulshatter
-/run print(">> Soulshatter")
 		]],
 		Teleport = [[
 #showtooltip
