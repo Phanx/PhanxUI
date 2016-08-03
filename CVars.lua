@@ -7,10 +7,11 @@
 ----------------------------------------------------------------------]]
 
 local cvars = {
-	--	Controls
+	-- Controls
 	autoClearAFK        = "1",
 	autoDismountFlying  = "0",
 	autoDismount        = "0", -- no UI
+	autointeract        = "0",
 	autoLootDefault     = "1",
 	autoOpenLootHistory = "0",
 	autoStand           = "0", -- no UI
@@ -25,7 +26,7 @@ local cvars = {
 	synchronizeMacros   = "1", -- no UI
 	synchronizeSettings = "1", -- no UI
 
-	--	Combat
+	-- Combat
 	ActionButtonUseKeyDown         = "0",
 --	assistAttack                   = "0",
 	autoSelfCast                   = "0",
@@ -36,11 +37,10 @@ local cvars = {
 	lossOfControlInterrupt         = "2",
 	lossOfControlRoot              = "2",
 	lossOfControlSilence           = "2",
---	showTargetOfTarget             = "1",
 --	spellActivationOverlayOpacity  = "1",
 --	stopAutoAttackOnTargetChange   = "0",
 
-	--	Display
+	-- Display
 	displayFreeBagSlots           = "0",
 	displayWorldPVPObjectives     = "2", -- no UI
 	dontShowEquipmentSetsOnItems  = "1", -- no UI
@@ -53,14 +53,15 @@ local cvars = {
 	threatPlaySounds              = "0",
 	timeMgrUseLocalTime           = "1", -- no UI
 
-	--	Objectives
+	-- Objectives
 	autoQuestWatch     = "1",
 	autoQuestProgress  = "0", -- no UI
 	mapFade            = "0",
 --	mapQuestDifficulty = "0",
+	trackQuestSorting  = "proximity",
 --	watchFrameWidth    = "1",
 
-	--	Social
+	-- Social
 	chatBubbles              = "0",
 	chatBubblesParty         = "0",
 	chatStyle                = "classic",
@@ -69,58 +70,57 @@ local cvars = {
 	guildMemberNotify        = "0",
 	profanityFilter          = "0",
 	removeChatDelay          = "1",
+	showToastWindow          = "0",
 	spamFilter               = "1",
 	wholeChatWindowClickable = "0", -- no UI
 
-	--	Names
-	BloatNameplates            = "1",
-	bloatthreat                = "1",
-	nameplateMotion            = "2",
-	UnitNameOwn                = "0",
-	UnitNameGuildTitle         = "0",
-	UnitNamePlayerGuild        = "0",
-	UnitNamePlayerPVPTitle     = "0",
-	UnitNameFriendlyPetName    = "0",
-	UnitNameFriendlyPlayerName = "0",
-	UnitNameEnemyPlayerName    = "1",
-	UnitNameEnemyPetName       = "1",
-	UnitNameEnemyGuardianName  = "1",
-	UnitNameEnemyTotemName     = "1",
+	-- Floating Combat Text
+	enableFloatingCombatText        = "0",
+	floatingCombatTextCombatHealingAbsorbTarget = "0",
+	floatingCombatTextLowManaHealth = "0",
+	floatingCombatTextReactives     = "0",
 
-	--	Floating Combat Text
-	CombatHealingAbsorbTarget = "0",
-	enableCombatText          = "0",
-	fctLowManaHealth          = "0",
-	fctReactives              = "0",
+	-- Nameplates
+	nameplateShowAll             = "1", -- always show nameplates, not just in combat, if they're enabled
+--	nameplateMotion              = "2",
+	nameplateShowEnemyMinions    = "1",
+	nameplateShowEnemyMinus      = "1",
 
-	--	Unit Frames
---	fullSizeFocusFrame   = "1",
+	-- Unit Frames
+	fullSizeFocusFrame   = "1",
 --	showArenaEnemyFrames = "1",
---	showTargetOfTarget   = "1",
+	showTargetOfTarget   = "1",
+	
+	-- Unit Names
+	UnitNameOwn                  = "0",
+	UnitNameGuildTitle           = "0",
+	UnitNamePlayerGuild          = "0",
+	UnitNamePlayerPVPTitle       = "0",
+	UnitNameFriendlyGuardianName = "0",
+	UnitNameFriendlyPetName      = "0",
+	UnitNameFriendlyPlayerName   = "0",
+	UnitNameFriendlyTotemName    = "0",
+	UnitNameEnemyPlayerName      = "1",
+	UnitNameEnemyPetName         = "1",
+	UnitNameEnemyGuardianName    = "1",
+	UnitNameEnemyTotemName       = "1",
 
-	--	Buffs and Debuffs
-	consolidateBuffs = "1",
-
-	--	Battle.net
-	showToastWindow = "0",
-
-	--	Camera
-	cameraDistanceMax       = "50",
-	cameraDistanceMaxFactor = "2", -- no UI
+	-- Camera
+	cameraDistanceMaxFactor = "1.5", -- no UI, range seems to be 0-2 exclusive
 	cameraSmoothStyle       = "1", -- Only horizontal when moving
 	cameraYawSmoothSpeed    = "90",
 
-	--	Help
+	-- Help
 	scriptErrors  = "1",
 	showTutorials = "0",
 
-	--	Miscellaneous
+	-- Miscellaneous
 	addFriendInfoShown = "1",
 	screenshotFormat   = "tga",
 	screenshotQuality  = "10",
 	talentFrameShown   = "1",
 
-	--	Graphics
+	-- Graphics
 	ffxGlow             = "0", -- full screen glow
 	ffxRectangle        = "1", -- widescreen frame buffer
 	groundEffectDist    = "100",
@@ -131,18 +131,65 @@ local cvars = {
 	violenceLevel       = "5", -- min 0, max 5
 }
 
+local bvars = {
+	-- Suppress annoying help popups
+	closedInfoFrames = {
+		[LE_FRAME_TUTORIAL_TALENT] = true,
+		[LE_FRAME_TUTORIAL_SPEC] = true,
+		[LE_FRAME_TUTORIAL_GLYPH] = true,
+		[LE_FRAME_TUTORIAL_SPELLBOOK] = true,
+		[LE_FRAME_TUTORIAL_PROFESSIONS] = true,
+		[LE_FRAME_TUTORIAL_CORE_ABILITITES] = true,
+		[LE_FRAME_TUTORIAL_PET_JOURNAL] = true,
+		[LE_FRAME_TUTORIAL_WHAT_HAS_CHANGED] = true,
+		[LE_FRAME_TUTORIAL_GARRISON_BUILDING] = true,
+		[LE_FRAME_TUTORIAL_GARRISON_MISSION_LIST] = true,
+		[LE_FRAME_TUTORIAL_GARRISON_MISSION_PAGE] = true,
+		[LE_FRAME_TUTORIAL_GARRISON_LANDING] = true,
+		[LE_FRAME_TUTORIAL_GARRISON_ZONE_ABILITY] = true,
+		[LE_FRAME_TUTORIAL_WORLD_MAP_FRAME] = true,
+		[LE_FRAME_TUTORIAL_CLEAN_UP_BAGS] = true,
+		[LE_FRAME_TUTORIAL_BAG_SETTINGS] = true,
+		[LE_FRAME_TUTORIAL_REAGENT_BANK_UNLOCK] = true,
+		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL] = true,
+		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_TAB] = true,
+		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_LEVEL] = true,
+		[LE_FRAME_TUTORIAL_TOYBOX_FAVORITE] = true,
+		[LE_FRAME_TUTORIAL_TOYBOX_MOUSEWHEEL_PAGING] = true,
+		[LE_FRAME_TUTORIAL_LFG_LIST] = true,
+		[LE_FRAME_TUTORIAL_TOYBOX] = true,
+		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL] = true,
+		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_TAB] = true,
+		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_LEVEL] = true,
+		[LE_FRAME_TUTORIAL_GAME_TIME_AUCTION_HOUSE] = true,
+		[LE_FRAME_TUTORIAL_TRANSMOG_JOURNAL_TAB] = true,
+		[LE_FRAME_TUTORIAL_TRANSMOG_MODEL_CLICK] = true,
+		[LE_FRAME_TUTORIAL_TRANSMOG_SPECS_BUTTON] = true,
+		[LE_FRAME_TUTORIAL_TRANSMOG_OUTFIT_DROPDOWN] = true,
+	}
+}
+
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_LOGIN")
 f:SetScript("OnEvent", function()
 	SetAutoDeclineGuildInvites(true)
 	ShowAccountAchievements(true) -- show ONLY account achievements
-	for k, v in pairs(cvars) do
-		local o = GetCVar(k)
-		if o == nil then
-			print("CVar", k, "doesn't exist!")
-		elseif o ~= v then
-	--		print("SetCVar", k, v)
-			SetCVar(k, v)
+
+	for cvar, value in pairs(cvars) do
+		local current = tostring(GetCVar(cvar))
+		if current ~= value then
+			--print("SetCVar", cvar, value)
+			SetCVar(cvar, value)
+		end
+	end
+
+	for cvar, fields in pairs(bvars) do
+		for field, value in pairs(fields) do
+			local current = GetCVarBitfield(cvar, field)
+			if current ~= value then
+				--print("SetCVarBitfield", cvar, field, value)
+				SetCVarBitfield(cvar, field, value)
+			end
 		end
 	end
 end)

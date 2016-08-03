@@ -1,4 +1,6 @@
 PhanxUI
 =======
 
-Hardcoded personal UI setup. No public release planned. Feel free to use any or all of the code, but keep my name out of it.
+Hardcoded personal UI setup. No official release planned. No support of any kind
+will be provided. Feel free to use any/all of the code for any reason, as long
+as you leave my name out of anything you publish.
