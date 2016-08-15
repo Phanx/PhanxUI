@@ -26,6 +26,10 @@ local cvars = {
 	synchronizeMacros   = "1", -- no UI
 	synchronizeSettings = "1", -- no UI
 
+	-- Tab Targeting
+	TargetNearestUseOld            = "1",
+	TargetPriorityAllowAnyOnScreen = "1",
+
 	-- Combat
 	ActionButtonUseKeyDown         = "0",
 --	assistAttack                   = "0",
@@ -76,7 +80,8 @@ local cvars = {
 
 	-- Floating Combat Text
 	enableFloatingCombatText        = "0",
-	floatingCombatTextCombatHealingAbsorbTarget = "0",
+	floatingCombatTextCombatDamageDirectionalScale = "0", -- disable fountain spray effect
+	floatingCombatTextCombatHealingAbsorbTarget    = "0",
 	floatingCombatTextLowManaHealth = "0",
 	floatingCombatTextReactives     = "0",
 
@@ -107,7 +112,7 @@ local cvars = {
 
 	-- Camera
 	cameraDistanceMaxFactor = "1.5", -- no UI, range seems to be 0-2 exclusive
-	cameraSmoothStyle       = "1", -- Only horizontal when moving
+	cameraSmoothStyle       = "1",   -- Only horizontal when moving
 	cameraYawSmoothSpeed    = "90",
 
 	-- Help
