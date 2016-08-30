@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	PhanxUI
 	Hardcoded personal UI setup.
-	Copyright (c) 2007-2015 Phanx <addons@phanx.net>. All rights reserved.
+	Copyright (c) 2007-2016 Phanx <addons@phanx.net>. All rights reserved.
 	Feel free to use any or all of the code from this addon in your own
 	addon, as long as you keep my name out of it.
 ----------------------------------------------------------------------]]
@@ -196,6 +196,13 @@ f:SetScript("OnEvent", function()
 				SetCVarBitfield(cvar, field, value)
 			end
 		end
+	end
+
+	local a, b, c, d = GetActionBarToggles()
+	if (a + b + c + d) > 0 then
+		SetActionBarToggles(0, 0, 0, 0)
+		SHOW_MULTI_ACTIONBAR_1, SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4 = nil, nil, nil, nil
+		MultiActionBar_Update()
 	end
 end)
 
