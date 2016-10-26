@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	PhanxUI
 	Hardcoded personal UI setup.
-	Copyright (c) 2007-2016 Phanx <addons@phanx.net>. All rights reserved.
+	Copyright (c) 2007-2015 Phanx <addons@phanx.net>. All rights reserved.
 	Feel free to use any or all of the code from this addon in your own
 	addon, as long as you keep my name out of it.
 ----------------------------------------------------------------------]]
@@ -28,7 +28,7 @@ local cvars = {
 
 	-- Tab Targeting
 	TargetNearestUseOld            = "1",
-	TargetPriorityAllowAnyOnScreen = "1",
+--	TargetPriorityAllowAnyOnScreen = "1", -- removed in 7.1
 
 	-- Combat
 	ActionButtonUseKeyDown         = "0",
@@ -52,6 +52,7 @@ local cvars = {
 --	rotateMinimap                 = "0",
 	screenEdgeFlash               = "0", -- no UI
 	serviceTypeFilter             = "2", -- no UI
+	showQuestTrackingTooltips     = "0", -- no UI
 	SpellTooltip_DisplayAvgValues = "1",
 	threatShowNumeric             = "1",
 	threatPlaySounds              = "0",
@@ -86,10 +87,13 @@ local cvars = {
 	floatingCombatTextReactives     = "0",
 
 	-- Nameplates
-	nameplateShowAll             = "1", -- always show nameplates, not just in combat, if they're enabled
 --	nameplateMotion              = "2",
+	nameplateOtherBottomInset    = "-1", -- don't stick nameplates to the screen edges for offscreen mobs
+	nameplateOtherTopInset       = "-1",
+	nameplateShowAll             = "1", -- always show nameplates, not just in combat, if they're enabled
 	nameplateShowEnemyMinions    = "1",
 	nameplateShowEnemyMinus      = "1",
+	nameplateShowSelf            = "0",
 
 	-- Unit Frames
 	fullSizeFocusFrame   = "1",
@@ -111,7 +115,7 @@ local cvars = {
 	UnitNameEnemyTotemName       = "1",
 
 	-- Camera
-	cameraDistanceMaxFactor = "1.5", -- no UI, range seems to be 0-2 exclusive
+--	cameraDistanceMaxFactor = "1.5", -- no UI, range seems to be 0-2 exclusive -- removed in 7.1
 	cameraSmoothStyle       = "1",   -- Only horizontal when moving
 	cameraYawSmoothSpeed    = "90",
 
@@ -196,13 +200,6 @@ f:SetScript("OnEvent", function()
 				SetCVarBitfield(cvar, field, value)
 			end
 		end
-	end
-
-	local a, b, c, d = GetActionBarToggles()
-	if (a + b + c + d) > 0 then
-		SetActionBarToggles(0, 0, 0, 0)
-		SHOW_MULTI_ACTIONBAR_1, SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4 = nil, nil, nil, nil
-		MultiActionBar_Update()
 	end
 end)
 
