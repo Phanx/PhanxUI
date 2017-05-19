@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	PhanxUI
 	Hardcoded personal UI setup.
-	Copyright (c) 2007-2015 Phanx <addons@phanx.net>. All rights reserved.
+	Copyright (c) 2007-2017 Phanx <addons@phanx.net>. All rights reserved.
 	Feel free to use any or all of the code from this addon in your own
 	addon, as long as you keep my name out of it.
 ----------------------------------------------------------------------]]
@@ -27,7 +27,7 @@ local cvars = {
 	synchronizeSettings = "1", -- no UI
 
 	-- Tab Targeting
-	TargetNearestUseOld            = "1",
+--	TargetNearestUseOld            = "1", -- removed
 --	TargetPriorityAllowAnyOnScreen = "1", -- removed in 7.1
 
 	-- Combat
@@ -49,6 +49,7 @@ local cvars = {
 	displayWorldPVPObjectives     = "2", -- no UI
 	dontShowEquipmentSetsOnItems  = "1", -- no UI
 	movieSubtitle                 = "1",
+	Outline                       = "1", -- Quest Objectives Only
 --	rotateMinimap                 = "0",
 	screenEdgeFlash               = "0", -- no UI
 	serviceTypeFilter             = "2", -- no UI
@@ -87,7 +88,7 @@ local cvars = {
 	floatingCombatTextReactives     = "0",
 
 	-- Nameplates
---	nameplateMotion              = "2",
+	nameplateMotion              = "1", -- Stacking, not Overlapping
 	nameplateOtherBottomInset    = "-1", -- don't stick nameplates to the screen edges for offscreen mobs
 	nameplateOtherTopInset       = "-1",
 	nameplateShowAll             = "1", -- always show nameplates, not just in combat, if they're enabled
@@ -113,6 +114,11 @@ local cvars = {
 	UnitNameEnemyPetName         = "1",
 	UnitNameEnemyGuardianName    = "1",
 	UnitNameEnemyTotemName       = "1",
+	UnitNameFriendlySpecialNPCName = "1", -- Quest NPCs
+	UnitNameHostleNPC = "1", -- typo accurate
+	UnitNameInteractiveNPC = "0",
+	UnitNameNPC = "0",
+	ShowQuestUnitCircles = "1",
 
 	-- Camera
 --	cameraDistanceMaxFactor = "1.5", -- no UI, range seems to be 0-2 exclusive -- removed in 7.1
@@ -131,12 +137,14 @@ local cvars = {
 
 	-- Graphics
 	ffxGlow             = "0", -- full screen glow
-	ffxRectangle        = "1", -- widescreen frame buffer
+--	ffxRectangle        = "1", -- widescreen frame buffer, removed
 	groundEffectDist    = "100",
 	groundEffectDensity = "128",
 --	maxfps              = "30",
 	maxfpsbk            = "15",
 	pathSmoothing       = "1",
+	uiscale             = "0.8",
+	useUiScale          = "1", -- never wanted this before, but its behavior is different in 7.1
 	violenceLevel       = "5", -- min 0, max 5
 }
 
