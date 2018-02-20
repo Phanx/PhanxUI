@@ -115,7 +115,8 @@ local cvars = {
 	ShowQuestUnitCircles         = "1",
 
 	-- Camera
---	cameraDistanceMaxFactor = "1.5", -- no UI, range seems to be 0-2 exclusive -- removed in 7.1
+	cameraDistanceMaxZoomFactor = "2.5",
+	cameraSmoothStyle           = "1",   -- Only horizontal when moving
 
 	-- Help
 	scriptErrors  = "1",
