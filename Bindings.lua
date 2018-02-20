@@ -77,6 +77,7 @@ local bindings = {
 	["`"]              = "DISMOUNT",
 	["ALT-Z"]          = "TOGGLEUI",
 	["CTRL-R"]         = "TOGGLEFPS",
+	["SHIFT-Z"]        = "TOGGLESHEATH",
 	["PRINTSCREEN"]    = "SCREENSHOT",
 
 	-- Camera
@@ -97,10 +98,6 @@ local bindings = {
 	["ALT-SHIFT-L"]    = "CLICK LevelFlightButton:LeftButton",
 	["ALT-N"]          = "NOTEBOOK_PANEL",
 }
-
-for i = 1, 6 do
-	bindings["SHIFT-"..i] = "CLICK BT4Button" .. (i+12) .. ":LeftButton"
-end
 
 local modifiedClicks = {
 	AUTOLOOTTOGGLE   = "SHIFT",
