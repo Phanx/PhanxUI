@@ -145,6 +145,7 @@ f:RegisterEvent("PLAYER_LOGIN")
 f:SetScript("OnEvent", function()
 	SetAutoDeclineGuildInvites(true)
 	ShowAccountAchievements(true) -- show ONLY account achievements
+	ConsoleExec("fixedfunction 1") -- disable "tunnel vision" glow effect (not a cvar)
 
 	for cvar, value in pairs(cvars) do
 		local current = tostring(GetCVar(cvar))
