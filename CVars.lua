@@ -139,44 +139,6 @@ local cvars = {
 	violenceLevel       = "5", -- min 0, max 5
 }
 
-local bvars = {
-	-- Suppress annoying help popups
-	closedInfoFrames = {
-		[LE_FRAME_TUTORIAL_TALENT] = true,
-		[LE_FRAME_TUTORIAL_SPEC] = true,
-		[LE_FRAME_TUTORIAL_GLYPH] = true,
-		[LE_FRAME_TUTORIAL_SPELLBOOK] = true,
-		[LE_FRAME_TUTORIAL_PROFESSIONS] = true,
-		[LE_FRAME_TUTORIAL_CORE_ABILITITES] = true,
-		[LE_FRAME_TUTORIAL_PET_JOURNAL] = true,
-		[LE_FRAME_TUTORIAL_WHAT_HAS_CHANGED] = true,
-		[LE_FRAME_TUTORIAL_GARRISON_BUILDING] = true,
-		[LE_FRAME_TUTORIAL_GARRISON_MISSION_LIST] = true,
-		[LE_FRAME_TUTORIAL_GARRISON_MISSION_PAGE] = true,
-		[LE_FRAME_TUTORIAL_GARRISON_LANDING] = true,
-		[LE_FRAME_TUTORIAL_GARRISON_ZONE_ABILITY] = true,
-		[LE_FRAME_TUTORIAL_WORLD_MAP_FRAME] = true,
-		[LE_FRAME_TUTORIAL_CLEAN_UP_BAGS] = true,
-		[LE_FRAME_TUTORIAL_BAG_SETTINGS] = true,
-		[LE_FRAME_TUTORIAL_REAGENT_BANK_UNLOCK] = true,
-		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL] = true,
-		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_TAB] = true,
-		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_LEVEL] = true,
-		[LE_FRAME_TUTORIAL_TOYBOX_FAVORITE] = true,
-		[LE_FRAME_TUTORIAL_TOYBOX_MOUSEWHEEL_PAGING] = true,
-		[LE_FRAME_TUTORIAL_LFG_LIST] = true,
-		[LE_FRAME_TUTORIAL_TOYBOX] = true,
-		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL] = true,
-		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_TAB] = true,
-		[LE_FRAME_TUTORIAL_HEIRLOOM_JOURNAL_LEVEL] = true,
-		[LE_FRAME_TUTORIAL_GAME_TIME_AUCTION_HOUSE] = true,
-		[LE_FRAME_TUTORIAL_TRANSMOG_JOURNAL_TAB] = true,
-		[LE_FRAME_TUTORIAL_TRANSMOG_MODEL_CLICK] = true,
-		[LE_FRAME_TUTORIAL_TRANSMOG_SPECS_BUTTON] = true,
-		[LE_FRAME_TUTORIAL_TRANSMOG_OUTFIT_DROPDOWN] = true,
-	}
-}
-
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_LOGIN")
 f:SetScript("OnEvent", function()
@@ -188,16 +150,6 @@ f:SetScript("OnEvent", function()
 		if current ~= value then
 			--print("SetCVar", cvar, value)
 			SetCVar(cvar, value)
-		end
-	end
-
-	for cvar, fields in pairs(bvars) do
-		for field, value in pairs(fields) do
-			local current = GetCVarBitfield(cvar, field)
-			if current ~= value then
-				--print("SetCVarBitfield", cvar, field, value)
-				SetCVarBitfield(cvar, field, value)
-			end
 		end
 	end
 end)
