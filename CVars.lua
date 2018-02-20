@@ -43,12 +43,12 @@ local cvars = {
 	-- Display
 	displayFreeBagSlots           = "0",
 	displayWorldPVPObjectives     = "2", -- no UI
-	dontShowEquipmentSetsOnItems  = "1", -- no UI
+	dontShowEquipmentSetsOnItems  = "0", -- no UI
 	movieSubtitle                 = "1",
 	Outline                       = "1", -- Quest Objectives Only
 	screenEdgeFlash               = "0", -- no UI
 	serviceTypeFilter             = "2", -- no UI
-	showQuestTrackingTooltips     = "0", -- no UI
+	showQuestTrackingTooltips     = "1", -- no UI
 	threatShowNumeric             = "1",
 	threatPlaySounds              = "0",
 	timeMgrUseLocalTime           = "1", -- no UI
