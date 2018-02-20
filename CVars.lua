@@ -26,10 +26,6 @@ local cvars = {
 	synchronizeMacros   = "1", -- no UI
 	synchronizeSettings = "1", -- no UI
 
-	-- Tab Targeting
---	TargetNearestUseOld            = "1", -- removed
---	TargetPriorityAllowAnyOnScreen = "1", -- removed in 7.1
-
 	-- Combat
 	ActionButtonUseKeyDown         = "0",
 --	assistAttack                   = "0",
@@ -50,11 +46,9 @@ local cvars = {
 	dontShowEquipmentSetsOnItems  = "1", -- no UI
 	movieSubtitle                 = "1",
 	Outline                       = "1", -- Quest Objectives Only
---	rotateMinimap                 = "0",
 	screenEdgeFlash               = "0", -- no UI
 	serviceTypeFilter             = "2", -- no UI
 	showQuestTrackingTooltips     = "0", -- no UI
-	SpellTooltip_DisplayAvgValues = "1",
 	threatShowNumeric             = "1",
 	threatPlaySounds              = "0",
 	timeMgrUseLocalTime           = "1", -- no UI
@@ -116,14 +110,12 @@ local cvars = {
 	UnitNameEnemyTotemName       = "1",
 	UnitNameFriendlySpecialNPCName = "1", -- Quest NPCs
 	UnitNameHostleNPC = "1", -- typo accurate
-	UnitNameInteractiveNPC = "0",
-	UnitNameNPC = "0",
-	ShowQuestUnitCircles = "1",
+	UnitNameInteractiveNPC       = "0",
+	UnitNameNPC                  = "0",
+	ShowQuestUnitCircles         = "1",
 
 	-- Camera
 --	cameraDistanceMaxFactor = "1.5", -- no UI, range seems to be 0-2 exclusive -- removed in 7.1
-	cameraSmoothStyle       = "1",   -- Only horizontal when moving
-	cameraYawSmoothSpeed    = "90",
 
 	-- Help
 	scriptErrors  = "1",
@@ -137,7 +129,6 @@ local cvars = {
 
 	-- Graphics
 	ffxGlow             = "0", -- full screen glow
---	ffxRectangle        = "1", -- widescreen frame buffer, removed
 	groundEffectDist    = "100",
 	groundEffectDensity = "128",
 --	maxfps              = "30",
