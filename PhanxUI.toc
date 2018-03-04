@@ -1,8 +1,7 @@
-## Interface: 70200
+## Interface: 70300
 
 ## Author: Phanx
 ## X-Email: addons@phanx.net
-## X-Copyright: Copyright (c) 2007-2017 Phanx. All rights reserved.
 
 Bindings.lua
 CVars.lua

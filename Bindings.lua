@@ -1,9 +1,9 @@
 --[[--------------------------------------------------------------------
 	PhanxUI
 	Hardcoded personal UI setup.
-	Copyright (c) 2007-2016 Phanx <addons@phanx.net>. All rights reserved.
-	Feel free to use any or all of the code from this addon in your own
-	addon, as long as you keep my name out of it.
+	Copyright 2007-2018 Phanx <addons@phanx.net>
+	All rights reserved. Permission is granted to reuse code from
+	this addon in other projects, as long as my name is not used.
 ----------------------------------------------------------------------]]
 
 local bindings = {
