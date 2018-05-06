@@ -6,6 +6,8 @@
 	this addon in other projects, as long as my name is not used.
 ----------------------------------------------------------------------]]
 
+local IS_WOW_8 = GetBuildInfo():match("^8")
+
 local bindings = {
 	-- Movement Keys
 	["E"]              = "MOVEFORWARD",
@@ -240,7 +242,13 @@ function PhanxUI:GetBindingFriendlyActionText(command)
 		end
 	elseif action:sub(1, 16) == "SHAPESHIFTBUTTON" then
 		action = tonumber(action:match("%d+"))
-		local form = select(2, GetShapeshiftFormInfo(action))
+		local formSpellID, _
+		if IS_WOW_8 then
+			_, _, _, formSpellID = GetShapeshiftFormInfo(action)
+		else
+			_, _, _, _, formSpellID = GetShapeshiftFormInfo(action)
+		end
+		local form = GetSpellInfo(formSpellID)
 		if form then
 			return format("Change stance to %s", form)
 		else
